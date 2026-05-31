@@ -1,0 +1,10 @@
+chromadb
+langchain-ollama
+langgraph
+mcp
+nltk
+ollama
+pandas
+psycopg2-binary
+sentence-transformers
+supabase

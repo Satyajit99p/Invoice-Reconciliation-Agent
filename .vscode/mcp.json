@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "invoice-reconciliation": {
+      "command": "C:/Users/Satyajit Panigrahi/AppData/Local/Programs/Python/Python310/python.exe",
+      "args": [
+        "-m",
+        "agent.mcp_server"
+      ],
+      "cwd": "D:/BITS WILP/DISSERTATION/IRA/Invoice-Reconciliation-Agent",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  }
+}

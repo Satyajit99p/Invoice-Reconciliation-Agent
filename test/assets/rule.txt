@@ -1,0 +1,58 @@
+Whenever there is a InvoiceLineStatusMsg value of Mismatch found, always try to check the rating.
+It is highly likely that the rating has failed.
+
+If there is a BillingEvent record with Error Occured, then there is high chances that
+there is not a valid Billable Milestone record for that tracking number.
+
+If there are Failed InvoiceLines or missing invoice lines, reprocess the cron jobs which 
+generate invoice lines from billing events.
+
+If InvoiceLineStatusMsg is "Mismatch found", check whether ChargeAmount differs between BillingEvent and InvoiceLine for the same TrackingNumber and ChargeType.
+
+If InvoiceLineStatus is REJECTED and BillingEventStatus is SUCCESS, then the issue is likely in downstream validation or transformation logic.
+
+If BillingEventStatus is FAILED, then do not expect any valid InvoiceLine for that TrackingNumber.
+
+If BillingEventStatusMsg contains "Error", check whether the corresponding Milestone is marked as non-billable or missing.
+
+If a TrackingNumber exists in VendorInvoiceLine but not in InvoiceLine, then either invoice generation failed or vendor sent extra data.
+
+If a TrackingNumber exists in InvoiceLine but not in VendorInvoiceLine, then vendor data is incomplete or missing.
+
+If multiple InvoiceLine records exist for the same TrackingNumber and ChargeType, then there is likely a duplication issue in invoice generation.
+
+If no BillingEvent exists for a TrackingNumber but InvoiceLine exists, then there is a pipeline sequencing issue.
+
+If Milestone.isBillable is false and an InvoiceLine exists, then billing rules have been violated.
+
+If Milestone.isBillable is true but no InvoiceLine exists, then billing was skipped or failed.
+
+If sum of InvoiceLine amounts for an InvoiceId does not match Invoice.TotalAmount, then invoice aggregation is incorrect.
+
+If sum of BillingEvent amounts does not match sum of InvoiceLine amounts for a TrackingNumber, then partial billing or missing lines are likely.
+
+If InvoiceLineStatus is APPROVED but ChargeAmount differs from VendorInvoiceLine, then there is a reconciliation mismatch.
+
+If a large number of InvoiceLines for the same InvoiceId are REJECTED, then there may be a systemic issue in validation logic.
+
+If InvoiceLineStatus alternates between APPROVED and REJECTED for the same InvoiceId, then partial processing or inconsistent rules are applied.
+
+If no InvoiceLines are generated for a set of successful BillingEvents, then the invoice generation job likely failed silently.
+
+If BillingEvent exists but Milestone record is missing, then billability cannot be determined and should be flagged.
+
+If VendorInvoiceLine contains duplicate TrackingNumber and ChargeType combinations, then vendor data likely has duplication issues.
+
+If InvoiceLine contains duplicate rows with identical TrackingNumber, ChargeType, and ChargeAmount, then idempotency failure has occurred.
+
+If InvoiceLineStatusMsg is "Valid line" but upstream BillingEventStatus is FAILED, then status propagation is inconsistent.
+
+If InvoiceLine exists without a corresponding Invoice record, then referential integrity is broken.
+
+If Invoice has TotalAmount = 0 but has InvoiceLines, then total calculation was not updated.
+
+If InvoiceLine ChargeType does not match BillingEvent ChargeType for same TrackingNumber, then transformation or mapping issue exists.
+
+If BillingEvent has multiple records for a TrackingNumber but only one InvoiceLine exists, then aggregation or grouping logic is incorrect.
+
+If VendorInvoiceLine ChargeAmount differs significantly (beyond tolerance) from InvoiceLine, then flag for manual reconciliation.
