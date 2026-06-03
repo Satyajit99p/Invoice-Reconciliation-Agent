@@ -1,6 +1,5 @@
 import ollama
-import json
-
+from agent.tool_selector_model import SemanticMatcher
 from agent.mcp_server import (
     get_excel_total,
     get_system_total,
@@ -32,7 +31,7 @@ register_tool({
     'type': 'function',
     'function': {
         'name': 'get_excel_total',
-        'description': 'Calculate total invoice amount from a vendor Excel file.',
+        'description': 'This calculates the total amount for the invoices present in the uploaded excel file.',
         'parameters': {
             'type': 'object',
             'properties': {'file_path': {'type': 'string'}},
@@ -45,7 +44,7 @@ register_tool({
     'type': 'function',
     'function': {
         'name': 'get_system_total',
-        'description': 'Retrieve invoice total from the database.',
+        'description': 'This function retrieves the total amount for a single invoice already present in system',
         'parameters': {
             'type': 'object',
             'properties': {'invoice_id': {'type': 'string'}},
@@ -205,13 +204,14 @@ def process_user_intent(user_query, filtered_tool_name=None):
                 
     return response['message']['content']
 
-# Test Case 1: Invoice Lookup
-query_1 = "Check if INV001 has been cleared yet."
-# Let's say your cosine similarity router picked 'get_invoice_status'
-print(process_user_intent(query_1, filtered_tool_name='get_invoice_status'))
-print("-" * 50)
+if __name__ == "__main__":
 
-# Test Case 2: Support Ticket
-query_2 = "Hey, user USR-88 is facing a critical login crash, open a high priority ticket."
-# Your cosine similarity router picked 'create_support_ticket'
-print(process_user_intent(query_2, filtered_tool_name='create_support_ticket'))
+    tools_available = {t['function']['name']: t['function']['description'] for t in TOOL_SCHEMAS}
+
+    _tool_selector = SemanticMatcher(tools_available)
+    
+    query = "Can you fetch me total amount for invoice INV-001?"
+    tool_name = _tool_selector.predict(query)
+
+    print(process_user_intent(query, filtered_tool_name=tool_name["predicted_class"]))
+    print("-" * 50)
