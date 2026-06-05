@@ -6,5 +6,6 @@ nltk
 ollama
 pandas
 psycopg2-binary
+requests
 sentence-transformers
 supabase
