@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', 'system-ui', 'sans-serif';
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+  
+  * {
+    @apply border-gray-200;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-600 border-transparent text-white hover:bg-primary-700 focus:ring-primary-500;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-primary-500;
+  }
+  
+  .btn-danger {
+    @apply btn bg-error-600 border-transparent text-white hover:bg-error-700 focus:ring-error-500;
+  }
+  
+  .input {
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg border border-gray-200 shadow-sm;
+  }
+  
+  .message-bubble {
+    @apply rounded-lg px-4 py-2 max-w-xs sm:max-w-md lg:max-w-lg;
+  }
+  
+  .message-user {
+    @apply message-bubble bg-primary-600 text-white ml-auto;
+  }
+  
+  .message-assistant {
+    @apply message-bubble bg-white border border-gray-200 text-gray-900;
+  }
+  
+  .message-system {
+    @apply message-bubble bg-gray-100 text-gray-600 mx-auto text-center text-sm;
+  }
+  
+  .process-step {
+    @apply flex items-center space-x-3 py-2 px-3 rounded-lg text-sm;
+  }
+  
+  .process-step-starting {
+    @apply process-step bg-warning-50 text-warning-800;
+  }
+  
+  .process-step-in-progress {
+    @apply process-step bg-primary-50 text-primary-800;
+  }
+  
+  .process-step-completed {
+    @apply process-step bg-success-50 text-success-800;
+  }
+  
+  .process-step-failed {
+    @apply process-step bg-error-50 text-error-800;
+  }
+  
+  .file-upload-area {
+    @apply border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors;
+  }
+  
+  .file-upload-area.drag-active {
+    @apply border-primary-400 bg-primary-50;
+  }
+  
+  .spinner {
+    @apply animate-spin rounded-full border-2 border-gray-200;
+  }
+  
+  .spinner-primary {
+    @apply spinner border-t-primary-600;
+  }
+  
+  .spinner-white {
+    @apply spinner border-t-white;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar for chat messages */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Markdown content styling */
+.markdown-content {
+  @apply text-gray-900;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  @apply font-semibold mt-4 mb-2;
+}
+
+.markdown-content h1 { @apply text-xl; }
+.markdown-content h2 { @apply text-lg; }
+.markdown-content h3 { @apply text-base; }
+
+.markdown-content p {
+  @apply mb-3;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  @apply ml-4 mb-3;
+}
+
+.markdown-content ul {
+  @apply list-disc;
+}
+
+.markdown-content ol {
+  @apply list-decimal;
+}
+
+.markdown-content li {
+  @apply mb-1;
+}
+
+.markdown-content code {
+  @apply bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-sm font-mono;
+}
+
+.markdown-content pre {
+  @apply bg-gray-100 text-gray-800 p-3 rounded-lg overflow-x-auto mb-3 text-sm font-mono;
+}
+
+.markdown-content pre code {
+  @apply bg-transparent p-0;
+}
+
+.markdown-content blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-3;
+}
+
+.markdown-content a {
+  @apply text-primary-600 hover:text-primary-800 underline;
+}
+
+.markdown-content table {
+  @apply w-full border-collapse mb-3;
+}
+
+.markdown-content th,
+.markdown-content td {
+  @apply border border-gray-300 px-2 py-1 text-sm;
+}
+
+.markdown-content th {
+  @apply bg-gray-100 font-semibold;
+}
