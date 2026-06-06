@@ -1,0 +1,42 @@
+# FastAPI Backend Requirements
+# Extends existing requirements.txt in parent directory
+
+# FastAPI and Server
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+websockets>=12.0
+
+# Pydantic for data validation
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# File handling and processing
+python-multipart>=0.0.6
+aiofiles>=23.2.0
+
+# Additional data processing
+pandas>=2.1.0  # May already be in parent requirements
+
+# HTTP client for external APIs (if not already present)
+httpx>=0.25.0
+
+# Environment and configuration
+python-dotenv>=1.0.0
+
+# Async support
+asyncio-mqtt>=0.11.0  # If needed for async operations
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+httpx>=0.25.0  # For testing FastAPI
+
+# Optional: Enhanced logging
+structlog>=23.2.0
+
+# Optional: Rate limiting
+slowapi>=0.1.9
+
+# Optional: Authentication (if needed later)
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4

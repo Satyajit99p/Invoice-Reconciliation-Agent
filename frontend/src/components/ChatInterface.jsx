@@ -61,7 +61,7 @@ const ChatInterface = () => {
   };
   
   // WebSocket for real-time updates
-  const {  connectionStatus, sendMessage: sendWebSocketMessage } = useWebSocket(
+  const { connectionStatus, sendMessage: sendWebSocketMessage } = useWebSocket(
     sessionId,
     handleWebSocketMessage
   );
