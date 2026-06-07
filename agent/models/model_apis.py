@@ -1,6 +1,7 @@
 import os
-import requests
 from typing import List, Dict, Optional, Any
+import os
+from openai import OpenAI
 
 
 class LLMClient:
@@ -31,16 +32,11 @@ class LLMClient:
         
         if not self.base_url or not self.api_key:
             raise RuntimeError("BASE_URL and API_KEY must be set")
-        
-        # Ensure base_url has proper format for chat completions endpoint
-        self.base_url = self.base_url.rstrip('/')
-        self.chat_completions_url = f"{self.base_url}/chat/completions"
-        
-        # Set up default headers
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
+
+        self.client = OpenAI(
+            api_key=self.api_key,
+            base_url=self.base_url,
+        )
     
     def chat_completions(
         self,
@@ -49,7 +45,7 @@ class LLMClient:
         tools: Optional[List[Dict[str, Any]]] = None,
         max_tokens: Optional[int] = None,
         **kwargs
-    ) -> Dict[str, Any]:
+    ):
         """
         Make a chat completions API call.
         
@@ -61,7 +57,7 @@ class LLMClient:
             **kwargs: Additional parameters to pass to the API      
             
         Returns:
-            Dictionary containing the API response
+            Full ChatCompletion response object from OpenAI
             
         Raises:
             RuntimeError: If the API request fails
@@ -69,37 +65,15 @@ class LLMClient:
         """
         if not messages:
             raise ValueError("Messages list cannot be empty")
-        
-        # Prepare the request payload
-        payload = {
-            "model": model or self.default_model,
-            "messages": messages,
+
+        response = self.client.chat.completions.create(
+            model=model or self.default_model,
+            messages=messages,
+            tools=tools,
+            max_tokens=max_tokens,
             **kwargs
-        }
-        
-        # Add optional parameters if provided
-        if tools:
-            payload["tools"] = tools
-        if max_tokens:
-            payload["max_tokens"] = max_tokens
-        
-        try:
-            response = requests.post(
-                self.chat_completions_url,
-                headers=self.headers,
-                json=payload,
-                timeout=60  # 60 second timeout
-            )
-            
-            # Raise an exception for bad status codes
-            response.raise_for_status()
-            
-            return response.json()
-            
-        except requests.exceptions.RequestException as e:
-            raise RuntimeError(f"LLM API request failed: {str(e)}")
-        except ValueError as e:
-            raise RuntimeError(f"Failed to parse LLM API response: {str(e)}")
+        )
+        return response
 
 
 if __name__ == "__main__":
